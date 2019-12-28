@@ -3,7 +3,7 @@
 ## Dependencies
 
 - cuda-10.2
-- [http://developer.download.nvidia.com/compute/machine-learning/repos/ubuntu1804/x86_64/](nvidia machine learning repos)
+- [nvidia machine learning repos](http://developer.download.nvidia.com/compute/machine-learning/repos/ubuntu1804/x86_64/)
 - anaconda3
 - OpenBCI
 
