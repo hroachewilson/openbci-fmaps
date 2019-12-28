@@ -1,0 +1,6 @@
+[submodule "cuda-packages/scikit-cuda"]
+	path = cuda-packages/scikit-cuda
+	url = https://github.com/lebedov/scikit-cuda.git
+[submodule "cuda-packages/pycuda"]
+	path = cuda-packages/pycuda
+	url = https://git.tiker.net/trees/pycuda.git
