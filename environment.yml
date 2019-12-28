@@ -57,6 +57,7 @@ dependencies:
   - python-picard
   - bitstring
   - bluepy
+  - pynput
 
   # scikit-cuda and dependencies
   - scikit-cuda>=0.5.2
