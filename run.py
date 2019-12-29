@@ -1,44 +1,47 @@
-from pylsl import StreamInlet, resolve_stream
+import sys
+import lib.transforms as transforms
+from lib.utils import azim_proj
+
+from lib.BCI import BCI
+
 import numpy as np
-import time
 import matplotlib.pyplot as plt
-from matplotlib import style
-from collections import deque
+from mpl_toolkits.mplot3d import axes3d
 import cv2
 
-last_print = time.time()
-fps_counter = deque(maxlen=150)
+if __name__ == '__main__':
 
-print("looking for an EEG stream...")
-streams = resolve_stream('type', 'EEG')
+    band_freqs = {  'Delta' : (0, 4),       # index:    0
+                    'Theta' : (4, 7),       # index:    1
+                    'Alpha' : (7, 15),      # index:    2
+                    'Beta'  : (15, 31),     # index:    3
+                    'Gamma' : (31, 45)  }   # index:    4
 
-inlet = StreamInlet(streams[0])
+    bci = BCI(band_freqs)
+    while True:
+        bci.get_band_power(2, 1, 4)
+        cv2.imshow('', cv2.resize(bci.get_img(100), (800,800), interpolation=cv2.INTER_CUBIC))
+        cv2.waitKey(1)
+    print('done')
+    locs_3d = np.array(transforms.neuroscan_positions_64)
+    locs_2d = []
+    print(locs_3d)
+    # Convert to 2D
+    for e in locs_3d:
+        locs_2d.append(azim_proj(e))
 
-channel_data = {}
+    #for i in range(64):
+        #print(transforms.neuroscan_positions_64[i])
+        #print(locs_2d[i])
+        #print()
 
-low_band = 15
-mid_band = 30
-high_band = 45
-band_width = 15
 
-FFT_MAX_HZ = 60
-
-HM_SECONDS = 10  # this is approximate. Not 100%. do not depend on this.
-TOTAL_ITERS = HM_SECONDS*25  # ~25 iters/sec
-
-while True:
-
-    image = np.zeros((4,4,3), np.uint8)
-    for i in range(16):
-        sample, timestamp = inlet.pull_sample()
-        sample = np.array(sample[:high_band])
-        sample_range = sample.max() - sample.min()
-        sample[:] = sample[:] / sample_range
-
-        image[int(i / 4), i % 4, 0] = int(255.0 * sum(sample[0:low_band]) / band_width)
-        image[int(i / 4), i % 4, 1] = int(255.0 * sum(sample[low_band:mid_band]) /  band_width)
-        image[int(i / 4), i % 4, 2] = int(255.0 * sum(sample[mid_band:high_band]) / band_width)
-
-    cv2.imshow('', cv2.resize(image, (800,600), interpolation=cv2.INTER_CUBIC))
-    #cv2.imshow('', image)
-    cv2.waitKey(1)
+    fig = plt.figure()
+    ax = fig.gca(projection='3d')
+    breaknum = 0
+    #for line in locs_3d:
+    #    ax.scatter(line[0], line[1], line[2], cmap='Greens')
+    for line in transforms.openbci_positions_16:
+        ax.scatter(line[0], line[1], 0, cmap='Greens')
+    plt.show()
+    exit(0)
