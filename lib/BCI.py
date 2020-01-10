@@ -64,7 +64,6 @@ class BCI:
             image[int(i / 4), i % 4, 0] = int(255.0 * sum(sample[self.gamma_low:self.gamma_high]) / self.gamma_width)
 
         cv2.imshow('', cv2.resize(image, (800,600), interpolation=cv2.INTER_LANCZOS4))
-        #cv2.imshow('', image)
         cv2.waitKey(1)
 
     def get_band_power(self, red_chan, green_chan, blue_chan):
@@ -79,7 +78,7 @@ class BCI:
 
     def get_img(self, side_length):
         img_array = gen_images(self.locs, self.feats, side_length, edgeless=True)
-        return (((np.dstack((img_array[2, :, :], img_array[1, :, :], img_array[0, :, :])) + 1.0) / 2.0)* 255.999).astype(np.uint8)
+        return (((np.dstack((img_array[1, :, :], img_array[2, :, :], img_array[0, :, :])) + 1.0) / 2.0)* 255.999).astype(np.uint8)
 
     def run_threads(self):
 

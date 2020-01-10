@@ -19,21 +19,23 @@ if __name__ == '__main__':
 
     bci = BCI(band_freqs)
     while True:
+
+        # Run LSL in Band Power Mode, 16 channels
         bci.get_band_power(2, 1, 4)
-        cv2.imshow('', cv2.resize(bci.get_img(100), (800,800), interpolation=cv2.INTER_CUBIC))
+        cv2.imshow('', cv2.resize(bci.get_img(50), (800,800), interpolation=cv2.INTER_CUBIC))
         cv2.waitKey(1)
+
+        # Run LSL in FFT Mode, 125 channels
+        #bci.plot_lsl_fft()
+        
     print('done')
     locs_3d = np.array(transforms.neuroscan_positions_64)
     locs_2d = []
     print(locs_3d)
+
     # Convert to 2D
     for e in locs_3d:
         locs_2d.append(azim_proj(e))
-
-    #for i in range(64):
-        #print(transforms.neuroscan_positions_64[i])
-        #print(locs_2d[i])
-        #print()
 
 
     fig = plt.figure()
