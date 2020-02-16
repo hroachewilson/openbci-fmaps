@@ -1,6 +1,7 @@
 name: openbci-fmaps
 channels:
 - defaults
+- menpo
 dependencies:
 - python=3.6
 - pip
@@ -14,6 +15,7 @@ dependencies:
 - numba
 - pyqt>=5.9
 - pandas>=0.18
+- opencv3
 - xlrd
 - scikit-learn
 - h5py
@@ -24,6 +26,7 @@ dependencies:
 - pytest-cov
 - pytest-mock
 - pytest-timeout
+- tensorflow-gpu
 - joblib
 - psutil
 - flake8
@@ -58,6 +61,7 @@ dependencies:
   - bitstring
   - bluepy
   - pynput
+  - pylsl
 
   # scikit-cuda and dependencies
   - scikit-cuda>=0.5.2

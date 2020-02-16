@@ -28,6 +28,7 @@ def gen_images(locs, features, n_gridpoints, normalize=True,
     """
     feat_array_temp = []
     nElectrodes = locs.shape[0]     # Number of electrodes
+    n_samples = features.shape[0]   # Number of samples
 
     # Test whether the feature vector length is divisible by number of electrodes
     assert features.shape[1] % nElectrodes == 0
@@ -41,13 +42,12 @@ def gen_images(locs, features, n_gridpoints, normalize=True,
         else:
             for c in range(n_colors):
                 feat_array_temp[c] = augment_EEG(feat_array_temp[c], std_mult, pca=False, n_components=n_components)
-    n_samples = features.shape[0]
 
     # Interpolate the values
     grid_x, grid_y = np.mgrid[
                      min(locs[:, 0]):max(locs[:, 0]):n_gridpoints*1j,
-                     min(locs[:, 1]):max(locs[:, 1]):n_gridpoints*1j
-                     ]
+                     min(locs[:, 1]):max(locs[:, 1]):n_gridpoints*1j]
+                     
     temp_interp = []
     for c in range(n_colors):
         temp_interp.append(np.zeros([n_samples, n_gridpoints, n_gridpoints]))
